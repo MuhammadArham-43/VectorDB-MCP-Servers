@@ -55,7 +55,7 @@ class QdrantMCPServer(FastMCP):
         Override this in a subclass to customize the format.
         """
 
-        entry_metadata = json.dumps(entry.metadata) if entry_metadata else ""
+        entry_metadata = json.dumps(entry.metadata) if entry.metadata else ""
         return f"<entry><content>{entry.content.strip()}</content><metadata>{entry_metadata}</metadata></entry>"
 
     def setup_tools(self):
@@ -100,14 +100,14 @@ class QdrantMCPServer(FastMCP):
             ctx: Context,
             query: str,
             collection_name: str
-        ) -> T.List[str]:
+        ) -> str:
             """
             Find memories in Qdrant.
             :param ctx: The context for the request.
             :param query: The query to use for the search.
             :param collection_name: The name of the collection to search in, optional. If not provided,
                                     the default collection is used.
-            :return: A list of entries found.
+            :return: A string of all relevant results. Contain xml-format entries with content and metadata.
             """
 
             await ctx.debug(f"Finding results for query: {query}")
@@ -118,6 +118,7 @@ class QdrantMCPServer(FastMCP):
                 collection_name=collection_name,
                 limit=self.qdrant_settings.search_limit
             )
+
             if not entries:
                 return [f"No information found for the query: '{query}'"]
             
@@ -126,7 +127,7 @@ class QdrantMCPServer(FastMCP):
             ]
             for entry in entries:
                 content.append(self.format_entry(entry))
-            return content
+            return "\n".join(content)
     
         async def find_with_default_collection(
             ctx: Context,
