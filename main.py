@@ -11,9 +11,6 @@ mcp = QdrantMCPServer(
 
 if __name__ == "__main__":
     print(f"Starting {mcp.name} on stdio...")
-    try:
-        mcp.run(transport="stdio")
-    except Exception as e:
-        print("ERROR: ", e)
+    mcp.run(transport="stdio")
     
 
