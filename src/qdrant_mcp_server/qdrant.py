@@ -120,4 +120,5 @@ class QdrantConnector:
             using=vector_name,
             limit=limit
         )
-        return [Entry(content=result.payload("document"), metadata=result.payload.get("metadata")) for result in search_results]
+
+        return [Entry(content=result.payload["document"], metadata=result.payload.get("metadata")) for result in search_results.points]
