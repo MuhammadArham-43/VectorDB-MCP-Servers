@@ -3,3 +3,4 @@ venv
 .env
 .lock
 meta.json
+__pycache__
