@@ -83,7 +83,7 @@ class QdrantMCPServer(BaseVectorDBMCPServer):
             )
 
             if not entries:
-                return [f"No information found for the query: '{query}'"]
+                return f"No information found for the query: '{query}'"
             
             content = [
                 f"Results for the query: '{query}'"
