@@ -2,8 +2,6 @@ import typing as T
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
-from src.qdrant_mcp_server.embeddings.types import EmbeddingProviderType
-
 DEFAULT_TOOL_STORE_DESCRIPTION = (
     "Keep the memory for later use, when you are asked to remember something."
 )
@@ -15,7 +13,7 @@ DEFAULT_TOOL_FIND_DESCRIPTION = (
     " - Get some personal information about the user \n"
 )
 
-class ToolSettings(BaseSettings):
+class QdrantToolSettings(BaseSettings):
     """
     Configuration for all the tools
     """
@@ -26,20 +24,6 @@ class ToolSettings(BaseSettings):
     tool_find_description: str = Field(
         default=DEFAULT_TOOL_FIND_DESCRIPTION,
         validation_alias="TOOL_FIND_DESCRIPTION"
-    )
-
-
-class EmbeddingProviderSettings(BaseSettings):
-    """
-    Configuration for the embedding provider
-    """
-    provider_type: EmbeddingProviderType = Field(
-        default=EmbeddingProviderType.FASTEMBED,
-        validation_alias="EMBEDDING_PROVIDER"
-    )
-    model_name: str = Field(
-        default="sentence-transformers/all-MiniLM-L6-v2",
-        validation_alias="EMBEDDING_MODEL"
     )
 
 

@@ -2,18 +2,10 @@ import logging
 import uuid
 import typing as T
 
-from pydantic import BaseModel
 from qdrant_client import AsyncQdrantClient, models
 
-from src.qdrant_mcp_server.embeddings.base import EmbeddingProvider
-
-Metadata = T.Dict[str, T.Any]
-class Entry(BaseModel):
-    """
-    A single entry in the Qdrant collection
-    """
-    content: str
-    metadata: T.Optional[Metadata] = None
+from src.vectordb_mcp_servers.base_provider.base_mcp import Entry
+from src.embeddings.base import EmbeddingProvider
 
 
 class QdrantConnector:

@@ -1,6 +1,5 @@
-from src.qdrant_mcp_server.embeddings.base import EmbeddingProvider
-from src.qdrant_mcp_server.embeddings.types import EmbeddingProviderType
-from src.qdrant_mcp_server.settings import EmbeddingProviderSettings
+from src.embeddings.base import EmbeddingProvider
+from src.embeddings.types import EmbeddingProviderType, EmbeddingProviderSettings
 
 def create_embedding_provider(settings: EmbeddingProviderSettings) -> EmbeddingProvider:
     """
@@ -9,6 +8,6 @@ def create_embedding_provider(settings: EmbeddingProviderSettings) -> EmbeddingP
     :return: An instance of the specified embedding provider
     """
     if settings.provider_type == EmbeddingProviderType.FASTEMBED:
-        from src.qdrant_mcp_server.embeddings.fastembed_provider import FastEmbedProvider
+        from src.embeddings.fastembed_provider import FastEmbedProvider
         return FastEmbedProvider(settings.model_name)
     raise ValueError(f"Unsupported embedding provider: {settings.provider_type}")

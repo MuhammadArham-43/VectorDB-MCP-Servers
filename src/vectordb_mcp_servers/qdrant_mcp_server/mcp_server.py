@@ -1,27 +1,19 @@
-import json
-import logging
 import typing as T
+from src.embeddings.factory import create_embedding_provider
+from src.vectordb_mcp_servers.base_provider.base_mcp import Entry, Metadata, BaseVectorDBMCPServer
+from src.vectordb_mcp_servers.qdrant_mcp_server.qdrant import QdrantConnector
+from src.vectordb_mcp_servers.qdrant_mcp_server.settings import QdrantSettings, QdrantToolSettings
+from src.embeddings.types import EmbeddingProviderSettings
 
-from mcp.server.fastmcp import Context, FastMCP
 
-from src.qdrant_mcp_server.embeddings.factory import create_embedding_provider
-from src.qdrant_mcp_server.qdrant import Entry, Metadata, QdrantConnector
-from src.qdrant_mcp_server.settings import (
-    EmbeddingProviderSettings,
-    QdrantSettings,
-    ToolSettings
-)
-
-logger = logging.getLogger(__name__)
-
-class QdrantMCPServer(FastMCP):
+class QdrantMCPServer(BaseVectorDBMCPServer):
     """
     MCP Server for Qdrant
     """
 
     def __init__(
         self,
-        tool_settings: ToolSettings,
+        tool_settings: QdrantToolSettings,
         qdrant_settings: QdrantSettings,
         embedding_provider_settings: EmbeddingProviderSettings,
         name: str = "qdrant-mcp-server",
@@ -46,20 +38,11 @@ class QdrantMCPServer(FastMCP):
         )
 
         super().__init__(name=name, instructions=instructions, **settings)
-        self.setup_tools()
     
     @property
     def name(self):
         return self._name
 
-    def format_entry(self, entry: Entry) -> str:
-        """
-        Formats the Entry into a string description.
-        Override this in a subclass to customize the format.
-        """
-
-        entry_metadata = json.dumps(entry.metadata) if entry.metadata else ""
-        return f"<entry><content>{entry.content.strip()}</content><metadata>{entry_metadata}</metadata></entry>"
 
     def setup_tools(self):
         """

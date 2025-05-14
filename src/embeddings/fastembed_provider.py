@@ -4,7 +4,7 @@ from typing import List
 from fastembed import TextEmbedding
 from fastembed.common.model_description import DenseModelDescription
 
-from src.qdrant_mcp_server.embeddings.base import EmbeddingProvider
+from src.embeddings.base import EmbeddingProvider
 
 
 class FastEmbedProvider(EmbeddingProvider):
