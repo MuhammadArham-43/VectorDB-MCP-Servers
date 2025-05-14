@@ -19,24 +19,12 @@ class AOSSConnector:
         self.region = aws_region
         self.index_name = index_name
         self._embedding_provider = embedding_provider
-        with open("log.txt", "w") as _f:
-            _f.write(self.host_url + "\n")
-            _f.write(self.region + "\n")
-            _f.write(self.index_name + "\n")
         self.client = self._connect()
         assert self.client.indices.exists(index=self.index_name), f"Index {index_name} does not exist"
     
     def _connect(self):
         credentials = boto3.Session().get_credentials()
-        creds = credentials.get_frozen_credentials()  # Ensures immutability
-        with open("log.txt", "a") as f:
-            f.write(f"AWS_ACCESS_KEY_ID={creds.access_key}\n")
-            f.write(f"AWS_SECRET_ACCESS_KEY={creds.secret_key}\n")
-            if creds.token:
-                f.write(f"AWS_SESSION_TOKEN={creds.token}\n")
-
         auth = AWSV4SignerAuth(credentials=credentials, region=self.region, service="aoss")
-
         return OpenSearch(
             hosts=[{"host": self.host_url, "port": 443}],
             http_auth = auth,
