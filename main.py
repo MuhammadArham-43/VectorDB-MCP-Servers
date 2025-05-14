@@ -11,6 +11,14 @@ def get_mcp(provider: ValidProviders):
             tool_settings=QdrantToolSettings(),
             embedding_provider_settings=EmbeddingProviderSettings()
         )
+    if provider == "AOSS":
+        from src.vectordb_mcp_servers.aoss.settings import AossSettings, AossToolSettings
+        from src.vectordb_mcp_servers.aoss.aoss_mcp import AossMCPServer
+        return AossMCPServer(
+            tool_settings=AossToolSettings(),
+            aoss_settings=AossSettings(),
+            embedding_provder_settings=EmbeddingProviderSettings()
+        )
     raise ValueError(f"Provider {provider} not implemented.")
 
 if __name__ == "__main__":
